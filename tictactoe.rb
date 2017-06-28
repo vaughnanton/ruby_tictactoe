@@ -7,7 +7,7 @@ end
 class Game
 
   def initialize
-    @players = playerSet
+    @players = set_player
     @game_over = false
   end
 
@@ -86,6 +86,6 @@ class Game
       again = true
     end
     play_again(players) if again == true
-  end    
+  end
 
 end
