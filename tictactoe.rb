@@ -1,68 +1,91 @@
-=begin
-Implementation of a tic-tac-toe game on the command line
-where two human players can play against each other and
-the board is displayed between turns.
-=end
+class Cell
+end
 
-class O
+class Player
+end
 
-class X
+class Game
 
-def begin_game
-  print "Hello, welcome to TicTacToe!"
-  empty_display method here
-  askwhichsquare method here
+  def initialize
+    @players = playerSet
+    @game_over = false
+  end
 
-def askwhichsquare
-  print "Which of the 9 spaces would you like to occupy? (enter a number 1-9)"
-  user_input = gets.chomp
-  if number 1-9 case statement
-    case 1
-      print class + board
-    case 2
-    case 3
-    case 4
-    case 5
-    case 6
-    case 7
-    case 8
-    case 9
-  elsif user_input is not 1-9
-    print "error, please enter a number between 1 and 9..."
-    user_input = gets.chomp
-    go back to case statement
-  (move method here)
-  (checkwin method here)
+  attr_reader :players
+  attr_reader :cells
+  attr_accessor :game_over
 
-def empty_display
-  display the empty board
+  def board
+    horizontals = "---+---+---"
+    puts " #{cells[1].value} | #{cells[2].value} | #{cells[3].value} "
+    puts horizontals
+    puts " #{cells[4].value} | #{cells[5].value} | #{cells[6].value} "
+    puts horizontals
+    puts " #{cells[7].value} | #{cells[8].value} | #{cells[9].value} "
+  end
 
-def update_display
-  store user_input onto board
+  def move(player)
+    puts "Which of the nine spaces would you like to occupy? (enter a number 1-9)"
+    player_input = gets.chomp.to_i
+    TO BE FINISHED
+  end
 
-def checkwin
-  if 3 in a row or diagonal
-    123
-    456
-    789
-    147
-    258
-    369
-    159
-    357
-    print "#{class} wins!"
-    reset
-  elsif
-    the board 1-9 is full
-    reset
-  else
-    display method here
+  def win_check(player)
+    winners = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[3,5,7],[1,5,9]]
+    winners.each do |a,b,c|
+      if ( cells[a].value == player.symbol && cells[b].value == player.symbol && cells[c].value == player.symbol )
+        return end_win(player)
+      end
+    end
+  return false
+  end
 
-def reset
-  erase game and start over
+  def end_win(player)
+    puts
+    print
+    puts "The winner is #{player.name}!"
+    self.game_over = true
 
-def move
-  check if occupied, cant move there
-  if not occupied, occupy space, update_display
-    print update_display
-  when done, switch class(from O to X, vice versa)
+  def draw_check(player)
+    squares = (1..9).map { |i| cells[i].value }
+    end_draw() if contents.none? { |i| i == " " }
+  end
+
+  def end_draw
+    puts
+    print
+    puts "It's a draw!"
+    self.game_over = true
+  end
+
+  def set_player
+    player_array = []
+
+    puts "What is the name of player one?"
+    p1name = gets.chomp.to_s
+    p1sym = "X"
+    player_array << Player.new(p1name, p1sym)
+
+    puts "What is the name of player two?"
+    p2name = gets.chomp.to_s
+    p2sym = "O"
+    player_array << Player.new(p2name, p2sym)
+  end
+
+  def play_again(players)
+    puts "New Game? (Y/N)"
+    response = gets.chomp.to_s.upcase[0]
+    case response
+    when "Y"
+      begin_game
+    when "N"
+      puts "Thanks for playing!"
+      return
+    else
+      puts "Error, please enter characters Y or N."
+      again = true
+    end
+    play_again(players) if again == true
+  end    
+
+end
